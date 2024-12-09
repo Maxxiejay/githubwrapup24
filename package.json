@@ -10,7 +10,6 @@
     "core-js": "^3.8.3",
     "gsap": "^3.12.5",
     "vue": "^3.2.13",
-    "vue-glitched-writer": "^1.1.7",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
