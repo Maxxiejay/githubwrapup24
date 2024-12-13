@@ -9,6 +9,7 @@
     --secondary-color-dark: #0eb9d9;
     --card-dark: #101015;
     --card-text: #f1f0e1;
+    --card-blue: #506385;
     --card-border: #2e2e3a;
     --linear-gradient: linear-gradient(145.02deg, var(--primary-color) 3.63%, var(--secondary-color) 99.87%);
 }

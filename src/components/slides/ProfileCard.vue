@@ -5,7 +5,7 @@
             <div class="profile-img">
                 <div class="insetbox-1"></div>
                 <div class="insetbox-2"></div>
-                <img src="../assets/images/avatar.png" alt="User's profile image">
+                <img src="../../assets/images/avatar.png" alt="User's profile image">
             </div>
         </div>
         <div class="profile-info">
@@ -109,7 +109,7 @@ const animateProfileBox = () => {
         width: "80%",
         duration: 1,
         onComplete: () => {
-            gsap.to(profileBox, { height: "500px", duration: 1 });
+            gsap.to(profileBox, { height: "450px", duration: 1 });
         },
     });
 };

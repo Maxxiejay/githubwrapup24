@@ -1,19 +1,51 @@
 <template>
   <div class="anim-view" ref="gestureArea">
     <img class="octo" src="../assets/images/octocat.png" alt="">
+    <StatusCounter :currentStatus="currentStatus +1" :totalStatusNo="totalStatusNo" :paused="paused"/>
+    <Title :text="getCurrentTitle" />
     <div id="content">
-      <ProfileCard />
-      <StatusCounter :currentStatus="currentStatus" :totalStatusNo="totalStatusNo" :paused="paused"/>
+      <component :is="getCurrentSlide" />
     </div>
+    <ShareButton />
   </div>
 </template>
 
 <script setup>
 import gsap from 'gsap';
-import { ref, onUnmounted, onMounted } from 'vue';
-import ProfileCard from '@/components/ProfileCard.vue';
+import { ref, onUnmounted, onMounted, computed } from 'vue';
+import ProfileCard from '@/components/slides/ProfileCard.vue';
 import StatusCounter from '@/components/StatusCounter.vue';
+import ShareButton from '@/components/ShareButton.vue';
+import Title from '@/components/Title.vue';
+import Activity from '@/components/slides/Activity.vue';
+import TopRepos from '@/components/slides/TopRepos.vue'; 
+import Collaboration from '@/components/slides/Collaboration.vue';
+import TopTech from '@/components/slides/TopTech.vue';
 import { useGestures } from '@/composables/useGestures'; // Adjust the path as needed
+
+const title = ref('GitHub Profile');
+
+const slides = [
+  ProfileCard,
+  Activity,
+  TopRepos,
+  Collaboration,
+  TopTech
+];
+
+const titles = [
+  'GitHub Profile',
+  'Activity',
+  'Top Repos',
+  'Collaboration',
+  'Top Tech'
+]
+
+// Computed property to get the current title based on the status
+const getCurrentTitle = computed(() => titles[currentStatus.value]);
+
+// Computed property to get the current component based on the status
+const getCurrentSlide = computed(() => slides[currentStatus.value]);
 
 const animateStars = () => {
   // Animate stars diagonally
@@ -59,10 +91,9 @@ const starryBackground = document.querySelector(".anim-view");
   }
 }
 
-const totalStatusNo = ref(10);
+const totalStatusNo = ref(5);
 const currentStatus = ref(0);
 const paused = ref(false);
-const statuses = Array.from({ length: totalStatusNo.value }, () => ({ viewed: false }));
 
 const gestureArea = ref(null);
 
@@ -74,7 +105,7 @@ const startInterval = () => {
   }
   statusInterval.value = setInterval(() => {
     next();
-  }, 2000);
+  }, 10000);
 };
 
 const pause = () => {
@@ -112,6 +143,9 @@ const { addListeners, removeListeners } = useGestures({
   onPrevious: previous,
 });
 
+// Heat Map
+
+
 onMounted(() => {
   if (gestureArea.value) {
     addListeners(gestureArea.value);
@@ -131,9 +165,10 @@ onUnmounted(() => {
 </script>
 
 <style>
-.about {
+.anim-view {
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100dvh;
@@ -141,7 +176,7 @@ onUnmounted(() => {
 
 .octo {
   position: absolute;
-  bottom: 20px; 
+  bottom: -15px; 
   left: -10%;
   width: 250px;
 }
@@ -155,7 +190,7 @@ onUnmounted(() => {
 #content{
   position: relative;
   z-index: 99;
-  height: 100dvh;
+  /* height: 100%; */
   width: 100%;
   display: flex;
   justify-content: center;

@@ -92,7 +92,7 @@ const getAnimationStyle = (index) => {
 }
 
 .status-bar.animate::after {
-    animation: fill 2s forwards linear;
+    animation: fill 10s forwards linear;
 }
 
 /* Keyframe animation */
