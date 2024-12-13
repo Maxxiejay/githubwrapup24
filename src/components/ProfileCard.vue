@@ -10,6 +10,7 @@
         </div>
         <div class="profile-info">
 
+
             <h2 class="name"></h2>
             <p class="desc"></p>
             <p class="joined"></p>
@@ -35,28 +36,36 @@ const profileInfo = ref([
 
 const animateprofileImage = () => {
     // GSAP timeline for profile image effect
-    const flickerEffect = gsap.timeline({ repeat: 1 });
-    
-    flickerEffect
-        .to(".profile-image img", {
-            opacity: 0.7, // Slight dim
-            filter: "brightness(0.8)", // Reduce brightness
-            duration: 0.1, // Short flicker
-            ease: "power1.inOut",
-        })
-        .to(".profile-image img", {
-            opacity: 0.5, // Almost off
-            filter: "brightness(0.6)",
-            duration: 0.08,
-            ease: "power1.inOut",
-            delay: Math.random() * 0.2, // Another random delay
-        })
-        .to(".profile-image img", {
-            opacity: 1, // Back to normal
-            filter: "brightness(1)",
-            duration: 0.2,
-            ease: "power1.inOut",
-        });
+    const flickerEffect = gsap
+    .timeline({ repeat: 1 });
+
+   flickerEffect
+  .to(".profile-img", {
+    opacity: 0.7, // Slight dim
+    filter: "brightness(0.8)", // Reduce brightness
+    duration: 0.1, // Short flicker
+    ease: "power1.inOut",
+  })
+  .to(".profile-img", {
+    opacity: 1, // Fully lit
+    filter: "brightness(1)",
+    duration: 0.05, // Quick return to normal
+    ease: "power1.inOut",
+    delay: Math.random() * 0.3, // Random delay for irregularity
+  })
+  .to(".profile-img", {
+    opacity: 0.8, // Almost off
+    filter: "brightness(0.8)",
+    duration: 0.08,
+    ease: "power1.inOut",
+    delay: Math.random() * 0.2, // Another random delay
+  })
+  .to(".profile-img", {
+    opacity: 1, // Back to normal
+    filter: "brightness(1)",
+    duration: 0.2,
+    ease: "power1.inOut",
+  });
 };
 
 const scrambleEffect = (element, text, duration) => {
@@ -97,10 +106,10 @@ const animateInfo = () => {
 const animateProfileBox = () => {
     const profileBox = document.querySelector("#profile-card");
     gsap.to(profileBox, {
-        width: "250px",
+        width: "80%",
         duration: 1,
         onComplete: () => {
-            gsap.to(profileBox, { height: "400px", duration: 1 });
+            gsap.to(profileBox, { height: "500px", duration: 1 });
         },
     });
 };
@@ -151,7 +160,7 @@ onMounted(() => {
 }
 
 .profile-img {
-    height: 200px;
+    height: 250px;
     overflow: hidden;
     position: relative;
 }
@@ -178,7 +187,7 @@ onMounted(() => {
 
 .insetbox-2 {
     right: 0;
-    bottom: 0;
+    bottom: 0px;
     /* margin-bottom: -50px; */
     transform: rotate(180deg);
 }

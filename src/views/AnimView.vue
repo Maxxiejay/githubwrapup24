@@ -1,16 +1,19 @@
 <template>
-  <div class="anim-view">
+  <div class="anim-view" ref="gestureArea">
     <img class="octo" src="../assets/images/octocat.png" alt="">
     <div id="content">
       <ProfileCard />
+      <StatusCounter :currentStatus="currentStatus" :totalStatusNo="totalStatusNo" :paused="paused"/>
     </div>
   </div>
 </template>
 
 <script setup>
 import gsap from 'gsap';
-import { onMounted } from 'vue';
+import { ref, onUnmounted, onMounted } from 'vue';
 import ProfileCard from '@/components/ProfileCard.vue';
+import StatusCounter from '@/components/StatusCounter.vue';
+import { useGestures } from '@/composables/useGestures'; // Adjust the path as needed
 
 const animateStars = () => {
   // Animate stars diagonally
@@ -56,8 +59,74 @@ const starryBackground = document.querySelector(".anim-view");
   }
 }
 
+const totalStatusNo = ref(10);
+const currentStatus = ref(0);
+const paused = ref(false);
+const statuses = Array.from({ length: totalStatusNo.value }, () => ({ viewed: false }));
+
+const gestureArea = ref(null);
+
+const statusInterval = ref(null);
+
+const startInterval = () => {
+  if (statusInterval.value) {
+    clearInterval(statusInterval.value);
+  }
+  statusInterval.value = setInterval(() => {
+    next();
+  }, 2000);
+};
+
+const pause = () => {
+  console.log('Paused');
+  // Logic to pause the status progression
+  if (statusInterval.value) {
+    clearInterval(statusInterval.value);
+  }
+};
+
+const next = () => {
+  console.log('Next');
+  if (currentStatus.value < totalStatusNo.value) {
+    currentStatus.value++;
+  }
+  console.log(currentStatus.value);
+  startInterval(); // Restart the interval
+  
+};
+
+const previous = () => {
+  console.log('Previous');
+  if (currentStatus.value > 0) {
+    currentStatus.value--;
+  }
+  startInterval(); // Restart the interval
+  console.log(currentStatus.value);
+
+};
+
+// Use the composable
+const { addListeners, removeListeners } = useGestures({
+  onPause: pause,
+  onNext: next,
+  onPrevious: previous,
+});
+
 onMounted(() => {
+  if (gestureArea.value) {
+    addListeners(gestureArea.value);
+  }
+  startInterval(); // Start the interval when the component is mounted
   animateStars()
+});
+
+onUnmounted(() => {
+  if (gestureArea.value) {
+    removeListeners(gestureArea.value);
+  }
+  if (statusInterval.value) {
+    clearInterval(statusInterval.value);
+  }
 });
 </script>
 
@@ -72,7 +141,7 @@ onMounted(() => {
 
 .octo {
   position: absolute;
-  bottom: 0;
+  bottom: 20px; 
   left: -10%;
   width: 250px;
 }
