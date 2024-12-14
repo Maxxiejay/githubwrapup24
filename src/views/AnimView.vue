@@ -21,9 +21,7 @@ import Activity from '@/components/slides/Activity.vue';
 import TopRepos from '@/components/slides/TopRepos.vue'; 
 import Collaboration from '@/components/slides/Collaboration.vue';
 import TopTech from '@/components/slides/TopTech.vue';
-import { useGestures } from '@/composables/useGestures'; // Adjust the path as needed
-
-const title = ref('GitHub Profile');
+import { useGestures } from '@/composables/useGestures';
 
 const slides = [
   ProfileCard,

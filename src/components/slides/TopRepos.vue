@@ -2,7 +2,7 @@
     <div id="top-repos">
         <div class="graph-cont">
             <div class="graph">
-                <div class="graph-bar">
+                <div class="graph-bar bar-1">
                     <div class="title">
                         <div>
                             <span class="hashtag">#1</span>
@@ -16,7 +16,7 @@
                         <small><span>Forks:</span> <span>10</span></small>
                     </div>
                 </div>
-                <div class="graph-bar">
+                <div class="graph-bar bar-2">
                     <div class="title">
                         <div>
                             <span class="hashtag">#2</span>
@@ -30,7 +30,7 @@
                         <small><span>Forks:</span> <span>10</span></small>
                     </div>
                 </div>
-                <div class="graph-bar">
+                <div class="graph-bar bar-3">
                     <div class="title">
                         <div>
                             <span class="hashtag">#3</span>
@@ -51,7 +51,22 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import Parallelograms from '../Parallelograms.vue';
+import gsap from 'gsap';
+
+const reposTL = gsap.timeline();
+
+const animateRepos = () => {
+    reposTL
+    .to('.bar-1', { right: 0, duration: 1, ease: 'power2.inOut' })
+    .to('.bar-2', { left: 0, duration: 1, ease: 'power2.inOut' }, '-=1')
+    .to('.bar-3', { bottom: 0, duration: 1, ease: 'power2.inOut' }, '-=1');
+}
+
+onMounted(() => {
+    animateRepos();
+});
 </script>
 
 <style scoped>
@@ -84,6 +99,7 @@ import Parallelograms from '../Parallelograms.vue';
     border-radius: 5px;
     padding: 10px;
     gap: 20px;
+    overflow: hidden;
 }
 
 .graph-bar {
@@ -93,6 +109,19 @@ import Parallelograms from '../Parallelograms.vue';
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+}
+
+.graph .bar-1{
+    right: -110%;
+}
+
+.graph .bar-2{
+    left: -110%;
+}
+
+.graph .bar-3{
+    bottom: -110%;
 }
 
 .graph-bar .title {

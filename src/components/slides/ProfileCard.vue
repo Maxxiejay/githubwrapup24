@@ -22,6 +22,7 @@
 </template>
 
 <script setup>
+import router from '@/router';
 import gsap from 'gsap';
 import { onMounted, ref } from 'vue';
 
@@ -137,7 +138,11 @@ const startAnimation = () => {
 };
 
 onMounted(() => {
-    username.value = sessionStorage.getItem('username');
+    if (sessionStorage.getItem('username') === null) {
+        router.push('/');
+    }else{
+        username.value = sessionStorage.getItem('username');
+    }
     startAnimation();
 });
 

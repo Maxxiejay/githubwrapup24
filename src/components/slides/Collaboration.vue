@@ -14,6 +14,19 @@
 </template>
 
 <script setup>
+import gsap from 'gsap';
+import { onMounted } from 'vue';
+
+const collabTL = gsap.timeline();
+const animateCollab = () => {
+    collabTL
+    .to('.pull-requests', { top: 0, duration: 1, ease: 'power2.inOut' })
+    .to('.issues', { bottom: 0, duration: 1, ease: 'power2.inOut' }, '-=1');
+}
+
+onMounted(() => {
+    animateCollab();
+});
 
 </script>
 
@@ -32,6 +45,7 @@
     display: flex;
     /* justify-content: space-between; */
     align-items: center;
+    overflow: hidden;
 }
 
 .issues, .pull-requests{
@@ -42,6 +56,7 @@
     flex: 1;
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
 .issues .value, .pull-requests .value {
@@ -53,11 +68,13 @@
     background-color: var(--card-blue);
     color: var(--card-text);
     clip-path: polygon(0 0, 100% 0%, 85% 100%, 0% 100%);
+    top: -110%;
 }
 
 .issues {
     clip-path: polygon(15% 1%, 100% 0%, 100% 100%, 0 100%);
     background-color: var(--card-text);
     flex-direction: column-reverse;
+    bottom: -110%;
 }
 </style>

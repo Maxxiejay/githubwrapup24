@@ -45,12 +45,12 @@ import { onMounted } from 'vue';
 const hexTL = gsap.timeline();
 const animateHex = () =>{
     hexTL
-    .to('.hex-3', { scale: 1, duration: 1, ease: 'bounce.in' })
-    .to('.hex-2', { scale: 1, duration: 1, ease: 'power2.inOut' })
-    .to('.hex-1', { scale: 1, duration: 1, ease: 'power2.inOut' })
-    .to('.hex-3', { rotateY: 180, duration: 1, ease: 'power2.inOut' })
-    .to('.hex-2', { rotateY: 180, duration: 1, ease: 'power2.inOut' })
-    .to('.hex-1', { rotateY: 180, duration: 1, ease: 'power2.inOut' });
+    .to('.hex-3', { scale: 1, duration: 0.5, ease: 'bounce.in' })
+    .to('.hex-2', { scale: 1, duration: 0.5, ease: 'power2.inOut' })
+    .to('.hex-1', { scale: 1, duration: 0.5, ease: 'power2.inOut' })
+    .to('.hex-3', { rotateY: 180, duration: 0.8, ease: 'power2.inOut' })
+    .to('.hex-2', { rotateY: 180, duration: 0.8, ease: 'power2.inOut' })
+    .to('.hex-1', { rotateY: 180, duration: 0.8, ease: 'power2.inOut' });
 }
 
 onMounted(() => {
