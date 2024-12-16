@@ -3,11 +3,11 @@
         <div class="collab-cont">
             <div class="pull-requests">
                 <span class="title">pull requests</span>
-                <span class="value">25</span>
+                <span class="value">{{ pullRequests }}</span>
             </div>
             <div class="issues">
                 <span class="title">issues</span>
-                <span class="value">4</span>
+                <span class="value">{{ issues }}</span>
             </div>
         </div>
     </div>
@@ -15,13 +15,32 @@
 
 <script setup>
 import gsap from 'gsap';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+
+const pullRequests = ref(0);
+const issues = ref(0);
 
 const collabTL = gsap.timeline();
 const animateCollab = () => {
     collabTL
-    .to('.pull-requests', { top: 0, duration: 1, ease: 'power2.inOut' })
-    .to('.issues', { bottom: 0, duration: 1, ease: 'power2.inOut' }, '-=1');
+        .to('.pull-requests', { top: 0, duration: 1, ease: 'power2.inOut' })
+        .to('.issues', { bottom: 0, duration: 1, ease: 'power2.inOut' }, '-=1')
+        .to({ value: 0 }, {
+            value: 24,
+            duration: 1,
+            ease: "power1.out",
+            onUpdate: function () {
+                pullRequests.value = Math.floor(this.targets()[0].value); // Update the text content
+            },
+        })
+        .to({ value: 0 }, {
+            value: 7,
+            duration: 1,
+            ease: "none",
+            onUpdate: function () {
+                issues.value = Math.floor(this.targets()[0].value); // Update the text content
+            },
+        }, '-=1');
 }
 
 onMounted(() => {
@@ -31,7 +50,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 #collaboration {
     display: flex;
     justify-content: center;
@@ -48,7 +66,8 @@ onMounted(() => {
     overflow: hidden;
 }
 
-.issues, .pull-requests{
+.issues,
+.pull-requests {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -59,7 +78,8 @@ onMounted(() => {
     position: relative;
 }
 
-.issues .value, .pull-requests .value {
+.issues .value,
+.pull-requests .value {
     font-size: 3.5rem;
 }
 

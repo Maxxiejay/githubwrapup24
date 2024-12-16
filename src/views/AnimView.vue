@@ -89,7 +89,7 @@ const starryBackground = document.querySelector(".anim-view");
   }
 }
 
-const totalStatusNo = ref(5);
+const totalStatusNo = ref(7);
 const currentStatus = ref(0);
 const paused = ref(false);
 
@@ -116,7 +116,7 @@ const pause = () => {
 
 const next = () => {
   console.log('Next');
-  if (currentStatus.value < totalStatusNo.value) {
+  if (currentStatus.value < totalStatusNo.value -1) {
     currentStatus.value++;
   }
   console.log(currentStatus.value);

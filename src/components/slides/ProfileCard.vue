@@ -12,7 +12,7 @@
 
 
             <h2 class="name"></h2>
-            <p class="desc"></p>
+            <!-- <p class="desc"></p> -->
             <p class="joined"></p>
             <p class="followers"></p>
             <p class="following"></p>
@@ -28,7 +28,6 @@ import { onMounted, ref } from 'vue';
 
 const username = ref('');
 const profileInfo = ref([
-    "Linux Kernel Creator",
     "Joined: 2005",
     "Followers: 1.2M",
     "Following: 0",
