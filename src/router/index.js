@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import SharedView from '@/views/SharedView.vue'
 import AnimView from '@/views/AnimView.vue'
 
 const routes = [
@@ -12,6 +13,12 @@ const routes = [
     path: '/anim',
     name: 'anim',
     component: AnimView
+  },
+  {
+    path: '/shared/:username',
+    name: 'shared',
+    component: SharedView,
+    param: true
   }
 ]
 

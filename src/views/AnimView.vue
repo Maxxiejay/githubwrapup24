@@ -2,12 +2,20 @@
   <div class="anim-view" ref="gestureArea">
     <img class="octo" src="../assets/images/octocat.png" alt="">
     <StatusCounter :currentStatus="currentStatus +1" :totalStatusNo="totalStatusNo" :paused="paused"/>
-    <Title :text="getCurrentTitle" />
-    <div id="content">
-      <component :is="getCurrentSlide" />
+    <div id="capture-area">
+      <Title :text="getCurrentTitle" />
+      <div id="content">
+        <component :is="getCurrentSlide" />
+      </div>
     </div>
-    <ShareButton />
   </div>
+  <ShareModal ref="modalRef">
+    <div class="share-btns">
+      <img src="../assets/svgs/download.svg" alt="" class="download" @click="downloadImage">
+      <img src="../assets/svgs/link.svg" alt="" class="link" @click="copyLink">
+    </div>
+  </ShareModal>
+  <ShareButton v-if="!shared" @click="showModal" />
 </template>
 
 <script setup>
@@ -16,19 +24,60 @@ import { ref, onUnmounted, onMounted, computed } from 'vue';
 import ProfileCard from '@/components/slides/ProfileCard.vue';
 import StatusCounter from '@/components/StatusCounter.vue';
 import ShareButton from '@/components/ShareButton.vue';
+import ShareModal from '@/components/ShareModal.vue';
 import Title from '@/components/Title.vue';
 import Activity from '@/components/slides/Activity.vue';
 import TopRepos from '@/components/slides/TopRepos.vue'; 
 import Collaboration from '@/components/slides/Collaboration.vue';
+import Acheivements from '@/components/slides/Acheivements.vue';
 import TopTech from '@/components/slides/TopTech.vue';
+import ThankYou from '@/components/slides/ThankYou.vue';
 import { useGestures } from '@/composables/useGestures';
+import useImageComposer from '@/composables/useImageComposer';
+
+const username = sessionStorage.getItem('username')
+const shared = ref(true)
+
+// Create a template ref for the modal
+const modalRef = ref(null);
+
+const showModal = () => {
+  modalRef.value.openModal(); // Call the exposed method to open the modal
+};
+
+const hideModal = () => {
+  modalRef.value.closeModal(); // Call the exposed method to close the modal
+};
+
+// const sharedLink = ref('hello')
+const sharedLink = ref(`https://githubwrapup24.netlify.app/shared/${username}`)
+
+const copyLink = ()=>{
+  navigator.clipboard.writeText(sharedLink.value);
+}
+
+const { setBackgroundImage, createImage } = useImageComposer();
+
+// Set the background image URL
+setBackgroundImage(require('../assets/images/octosign.jpg'));
+
+// Function to trigger image creation and download
+const downloadImage = () => {
+  createImage('capture-area', {
+    width: 1200, // Optional: Specify final image width
+    height: 800, // Optional: Specify final image height
+    fileName: `${username}.png`, // Optional: Specify file name
+  });
+};
 
 const slides = [
   ProfileCard,
   Activity,
   TopRepos,
   Collaboration,
-  TopTech
+  TopTech,
+  Acheivements,
+  ThankYou
 ];
 
 const titles = [
@@ -36,7 +85,9 @@ const titles = [
   'Activity',
   'Top Repos',
   'Collaboration',
-  'Top Tech'
+  'Top Tech',
+  'Acheivements',
+  'Thank You!'
 ]
 
 // Computed property to get the current title based on the status
@@ -106,13 +157,13 @@ const startInterval = () => {
   }, 10000);
 };
 
-const pause = () => {
-  console.log('Paused');
-  // Logic to pause the status progression
-  if (statusInterval.value) {
-    clearInterval(statusInterval.value);
-  }
-};
+// const pause = () => {
+//   console.log('Paused');
+//   // Logic to pause the status progression
+//   if (statusInterval.value) {
+//     clearInterval(statusInterval.value);
+//   }
+// };
 
 const next = () => {
   console.log('Next');
@@ -136,7 +187,7 @@ const previous = () => {
 
 // Use the composable
 const { addListeners, removeListeners } = useGestures({
-  onPause: pause,
+  // onPause: pause,
   onNext: next,
   onPrevious: previous,
 });
@@ -145,6 +196,8 @@ const { addListeners, removeListeners } = useGestures({
 
 
 onMounted(() => {
+  shared.value = sessionStorage.getItem('shared') === 'true' ? true : false;
+  // username.value = sessionStorage.getItem('username');
   if (gestureArea.value) {
     addListeners(gestureArea.value);
   }
@@ -183,6 +236,19 @@ onUnmounted(() => {
   position: absolute;
   background: white;
   border-radius: 50%;
+}
+
+#capture-area{
+  display: contents;
+}
+
+.share-btns{
+  display: flex;
+  justify-content: space-around;
+}
+
+.share-btns img{
+  width: 50px;
 }
 
 #content{

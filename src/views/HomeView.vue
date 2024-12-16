@@ -30,6 +30,7 @@ const review = ()=>{
     error.value.isError = true;
   } else {
     sessionStorage.setItem('username', username.value);
+    sessionStorage.setItem('shared', false )
     router.push({name: 'anim'});
   }
 }

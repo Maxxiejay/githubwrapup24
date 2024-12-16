@@ -13,11 +13,12 @@
 <style scoped>
 #share-btn {
     position: absolute;
-    bottom: 20px;
+    bottom: 80px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 999999;
 }
 #share-btn .border {
     clip-path: polygon(0 0, 90% 0, 100% 20%, 100% 100%, 10% 100%, 0% 80%);
