@@ -38,7 +38,7 @@ const review = ()=>{
 }
 
 const getUserInfo = (username) => {
-  axios.post('http://githubwrap.futamart.com/github-stats',{
+  axios.post('https://githubwrap.futamart.com/github-stats',{
     "username": username
   })
   .then((res) => storeData(res.data))
