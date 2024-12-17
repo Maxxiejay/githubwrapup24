@@ -18,6 +18,7 @@
 
 <script setup>
 import router from '@/router';
+import axios from 'axios';
 import gsap from 'gsap';
 import { ref, onMounted } from 'vue';
 
@@ -31,8 +32,21 @@ const review = ()=>{
   } else {
     sessionStorage.setItem('username', username.value);
     sessionStorage.setItem('shared', false )
-    router.push({name: 'anim'});
+    getUserInfo(username.value)
+    // router.push({name: 'anim'});
   }
+}
+
+const getUserInfo = (username) => {
+  axios.post('http://githubwrap.futamart.com/github-stats',{
+    "username": username
+  })
+  .then((res) => storeData(res.data))
+  .catch((res) => console.log(res))
+}
+
+const storeData = (data) =>{
+  console.log(data)
 }
 
 const animatePlanet = () => {
@@ -44,28 +58,8 @@ const animatePlanet = () => {
   });
 }
 
-const animateTextGradient = () => {
-  gsap.to('#header', {
-    duration: 3,
-    backgroundPosition: '200% 0',
-    repeat: -1,
-    ease: 'linear'
-  });
-}
-
-const animateBorder = () => {
-  gsap.to("#cta-box::after", {
-    backgroundPosition: "200% 0%",
-    duration: 3,
-    ease: "linear",
-    repeat: -1,
-  });
-}
-
 onMounted(() => {
   animatePlanet();
-  animateTextGradient();
-  animateBorder();
 });
 </script>
 
