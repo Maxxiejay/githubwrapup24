@@ -1,7 +1,7 @@
 <template>
   <div class="anim-view" ref="gestureArea">
     <img class="octo" src="../assets/images/octocat.png" alt="">
-    <StatusCounter :currentStatus="currentStatus +1" :totalStatusNo="totalStatusNo" :paused="paused"/>
+    <StatusCounter :currentStatus="currentStatus + 1" :totalStatusNo="totalStatusNo" :paused="paused" />
     <div id="capture-area">
       <Title :text="getCurrentTitle" />
       <div id="content">
@@ -27,13 +27,12 @@ import ShareButton from '@/components/ShareButton.vue';
 import ShareModal from '@/components/ShareModal.vue';
 import Title from '@/components/Title.vue';
 import Activity from '@/components/slides/Activity.vue';
-import TopRepos from '@/components/slides/TopRepos.vue'; 
+import TopRepos from '@/components/slides/TopRepos.vue';
 import Collaboration from '@/components/slides/Collaboration.vue';
 import Acheivements from '@/components/slides/Acheivements.vue';
 import TopTech from '@/components/slides/TopTech.vue';
 import ThankYou from '@/components/slides/ThankYou.vue';
 import { useGestures } from '@/composables/useGestures';
-import useImageComposer from '@/composables/useImageComposer';
 
 const username = sessionStorage.getItem('username')
 const shared = ref(true)
@@ -52,23 +51,9 @@ const hideModal = () => {
 // const sharedLink = ref('hello')
 const sharedLink = ref(`https://githubwrapup24.netlify.app/shared/${username}`)
 
-const copyLink = ()=>{
+const copyLink = () => {
   navigator.clipboard.writeText(sharedLink.value);
 }
-
-const { setBackgroundImage, createImage } = useImageComposer();
-
-// Set the background image URL
-setBackgroundImage(require('../assets/images/octosign.jpg'));
-
-// Function to trigger image creation and download
-const downloadImage = () => {
-  createImage('capture-area', {
-    width: 1200, // Optional: Specify final image width
-    height: 800, // Optional: Specify final image height
-    fileName: `${username}.png`, // Optional: Specify file name
-  });
-};
 
 const slides = [
   ProfileCard,
@@ -98,7 +83,7 @@ const getCurrentSlide = computed(() => slides[currentStatus.value]);
 
 const animateStars = () => {
   // Animate stars diagonally
-const starryBackground = document.querySelector(".anim-view");
+  const starryBackground = document.querySelector(".anim-view");
 
   // Create stars dynamically
   for (let i = 0; i < 150; i++) {
@@ -167,12 +152,12 @@ const startInterval = () => {
 
 const next = () => {
   console.log('Next');
-  if (currentStatus.value < totalStatusNo.value -1) {
+  if (currentStatus.value < totalStatusNo.value - 1) {
     currentStatus.value++;
   }
   console.log(currentStatus.value);
   startInterval(); // Restart the interval
-  
+
 };
 
 const previous = () => {
@@ -192,10 +177,24 @@ const { addListeners, removeListeners } = useGestures({
   onPrevious: previous,
 });
 
-// Heat Map
+// Create a new Audio instance
+const audio = new Audio(require('../assets/audio/bg_music.mp3'));
 
+const playBgMusic = () => {
+  audio.play();
+  audio.addEventListener('ended', () => {
+    playBgMusic()
+  });
+
+}
+
+const stopMusic = () => {
+  audio.pause();       // Pause the audio
+  audio.currentTime = 0; // Reset playback time to the beginning
+}
 
 onMounted(() => {
+  playBgMusic()
   shared.value = sessionStorage.getItem('shared') === 'true' ? true : false;
   // username.value = sessionStorage.getItem('username');
   if (gestureArea.value) {
@@ -206,6 +205,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  stopMusic()
   if (gestureArea.value) {
     removeListeners(gestureArea.value);
   }
@@ -227,7 +227,7 @@ onUnmounted(() => {
 
 .octo {
   position: absolute;
-  bottom: -15px; 
+  bottom: -15px;
   left: -10%;
   width: 250px;
 }
@@ -238,20 +238,20 @@ onUnmounted(() => {
   border-radius: 50%;
 }
 
-#capture-area{
+#capture-area {
   display: contents;
 }
 
-.share-btns{
+.share-btns {
   display: flex;
   justify-content: space-around;
 }
 
-.share-btns img{
+.share-btns img {
   width: 50px;
 }
 
-#content{
+#content {
   position: relative;
   z-index: 99;
   /* height: 100%; */

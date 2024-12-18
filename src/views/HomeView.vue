@@ -32,8 +32,8 @@ const review = ()=>{
   } else {
     sessionStorage.setItem('username', username.value);
     sessionStorage.setItem('shared', false )
-    getUserInfo(username.value)
-    // router.push({name: 'anim'});
+    // getUserInfo(username.value)
+    router.push({name: 'anim'});
   }
 }
 
